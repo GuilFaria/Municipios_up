@@ -25,11 +25,13 @@ def cria_tabela_municipios(usuario = usuario, senha = senha) -> bool:
 
         cur.execute(
             '''
+            DROP TABLE IF EXISTS tb_municipios_ibge CASCADE;
             CREATE TABLE IF NOT EXISTS tb_municipios_ibge(
                     cod_municipio SERIAL PRIMARY KEY,
                     cod_ibeg BIGINT NOT NULL,
                     nome_municipio VARCHAR(255) NOT NULL,
-                    uf CHAR(2) NOT NULL
+                    uf CHAR(2) NOT NULL,
+                    regiao CHAR(12) NOT NULL
                 )
             ''')
 
@@ -50,8 +52,8 @@ def popula_tabela_municipios(lista_valores: list):
         
         cur.executemany(
             '''
-            INSERT INTO tb_municipios_ibge (cod_ibeg, nome_municipio, uf)
-            VALUES (%s, %s, %s) 
+            INSERT INTO tb_municipios_ibge (cod_ibeg, nome_municipio, uf, regiao)
+            VALUES (%s, %s, %s, %s) 
             ''', lista_valores)
         
         conn.commit()
